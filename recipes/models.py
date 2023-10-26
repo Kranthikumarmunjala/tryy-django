@@ -25,11 +25,12 @@ class RecipeIngredient(models.Model):
     recipe=models.ForeignKey(Recipe,on_delete=models.CASCADE)
     name=models.CharField(max_length=220)
     description=models.TextField(blank=True, null=True)
-    quantity=models.FloatField()
-    unit=
+    quantity=models.CharField(max_length=50)   #1 1/4
+    unit=models.CharField(max_length=50)  #pounds, lbs,oz,gram,etc
     direction=models.TextField(blank=True, null=True)
     timestamp =models.DateTimeField(auto_now_add=True)
     updated =models.DateTimeField(auto_now=True)
+    active=models.BooleanField(default=True)
 
 
 
