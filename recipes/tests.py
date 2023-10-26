@@ -62,3 +62,15 @@ class RecipeTestCase(TestCase):
         user=self.user_a
         qs=RecipeIngredient.objects.filter(recipe__user=user)
         self.assertEqual(qs.count(),1)
+
+    def test_user_two_level_relation_reverse(self):
+        user=self.user_a
+        recipeingredient_ids=list(user.recipe_set.all().values_list('recipeingredient__id',flat=True))
+        qs=RecipeIngredient.objects.filter(id__in=recipeingredient_ids)
+        self.assertEqual(qs.count(),1)
+
+    def test_user_two_level_relation_via_recipes(self):
+        user=self.user_a
+        ids=user.recipe_set.all().values_list("id", flat=True)
+        qs=RecipeIngredient.objects.filter(recipe__id__in=ids)
+        self.assertEqual(qs.count(),1)
