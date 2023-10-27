@@ -38,17 +38,21 @@ class RecipeIngredient(models.Model):
     active=models.BooleanField(default=True)
 
     def convert_to_system(self, system="mks"):
+        if self.quantity_as_float is None:
+            return None
         ureg=pint.UnitRegistry(system=system)
         measurement=self.quantity_as_float * ureg[self.unit]
-        print(measurement)
+        return measurement #.to_base_units()
 
     def as_mks(self):
         #meter, kilogram,second
-        pass
+        measurement=self.convert_to_system(system='mks')
+        return measurement.to_base_units()
+
     def as_imperial(self):
         #miles, pounds, seconds
-        pass
-
+        measurement = self.convert_to_system(system='imperial')
+        return measurement.to_base_units()
 
     def save(self, *args, **kwargs):
         qty=self.quantity
