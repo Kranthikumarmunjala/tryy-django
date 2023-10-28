@@ -5,32 +5,38 @@
 
 
 {% if message %}
+
 <p>{message}</p>
 {% endif %}
 <div style='margin-top:30px;'>
     <form action='.' method="POST">
         {% csrf_token %}
         {{ form.as_p}}
-        <button style='margin-top:10px;' type='submit'>Create article</button>
+
+        {% if form_2 %}
+        <h3>Ingredients</h3>
+        {{ form_2.as_p}}
+        {% endif %}
+        <button style='margin-top:10px;' type='submit'>save</button>
     </form>
 </div>
 
-{% if not created %}
+<!--{% if not created %}-->
 
 
-<div style='margin-top:30px;'>
-    <form action='.' method="POST">
-        {% csrf_token %}
-        {{ form.as_p}}
-        <button style='margin-top:10px;' type='submit'>Create article</button>
-    </form>
-</div>
-{% else %}
+<!--<div style='margin-top:30px;'>-->
+<!--    <form action='.' method="POST">-->
+<!--        {% csrf_token %}-->
+<!--        {{ form.as_p}}-->
+<!--        <button style='margin-top:10px;' type='submit'>Create article</button>-->
+<!--    </form>-->
+<!--</div>-->
+<!--{% else %}-->
 
 
-<p>Your articles was created.</p>
-<a href='/articles/{{ object.id}}/'>{{ object.title }}-{{object.content}}</a>
+<!--<p>Your articles was created.</p>-->
+<!--<a href='/articles/{{ object.id}}/'>{{ object.title }}-{{object.content}}</a>-->
 
-{% endif %}
+<!--{% endif %}-->
 
 {% endblock content %}
