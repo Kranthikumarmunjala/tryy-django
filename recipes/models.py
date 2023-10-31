@@ -1,6 +1,7 @@
 import pint
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
 from.utils import number_str_to_float
 from .validators import validate_unit_of_measure
@@ -15,6 +16,66 @@ from .validators import validate_unit_of_measure
         -Directions for Ingredients
 """
 
+
+class RecipeQuerySet(models.QuerySet):
+    def search(self,query=None):
+        if query is None or query == "":
+            return self.none()  #[]
+        lookups = (
+                Q(name__icontains=query) |
+                Q(description__icontains=query) |
+                Q(directions__icontains=query)
+        )
+        return self.filter(lookups)
+
+class RecipeManager(models.Manager):
+    def get_queryset(self):
+        return RecipeQuerySet(self.model, using=self._db)
+
+    def search(self,query=None):
+        return self.get_queryset().search(query=query)
+'''
+class Article(models.Model):
+    user=models.ForeignKey(User, blank=True, null=True, on_delete=models.SET_NULL)
+    title=models.CharField(max_length=120)
+    slug=models.SlugField(unique=True,blank=True, null=True)
+    content=models.TextField()
+    timestamp=models.DateTimeField(auto_now_add=True)
+    updated=models.DateTimeField(auto_now=True)
+    publish=models.DateField(auto_now_add=False,auto_now=False, null=True,blank=True)
+
+    objects=ArticleManager()
+
+    def get_absolute_url(self):
+        #return f'/artcles/{self.slug}/'
+        return reverse("articles:detail", kwargs={"slug": self.slug})
+
+    def save(self, *args, **kwargs):
+        #obj=Article.objects.get(id=1)
+        #set somthing
+        # if self.slug is None:
+        #     self.slug=slugify(self.title)
+        # if self.slug is None:
+        #     slugify_instance_title(self, save=False)
+        super().save(*args, **kwargs)
+        #obj.save()
+        #do another somthing
+
+
+def article_pre_save(sender,instance,*args, **kwargs):
+    #print('pre_save')
+    if instance.slug is None:
+        slugify_instance_title(instance, save=False)
+
+pre_save.connect(article_pre_save, sender=Article)
+
+def article_post_save(sender,instance,created,*args, **kwargs):
+    #print('post_save')
+    if created:
+        slugify_instance_title(instance,save=True)
+
+post_save.connect(article_post_save, sender=Article)
+'''
 class Recipe(models.Model):
     user= models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     name= models.CharField(max_length=220)
@@ -23,6 +84,12 @@ class Recipe(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
     active=models.BooleanField(default=True)
+
+    objects=RecipeManager()
+
+    @property
+    def title(self):
+        return self.name
 
     def get_absolute_url(self):
         return reverse("recipess:detail", kwargs={"id": self.id})
