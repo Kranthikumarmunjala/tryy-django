@@ -29,10 +29,22 @@ def recipe_detail_view(request, id=None):
 
 @login_required
 def recipe_delete_view(request, id=None):
-    obj=get_object_or_404(Recipe, id=id, user=request.user)
+    try:
+        obj=get_object_or_404(Recipe, id=id, user=request.user)
+    except:
+        obj=None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
     if request.method=="POST":
         obj.delete()
         success_url=reverse('recipes:list')
+        if request.htmx:
+            header={
+                'HX-Redirect':success_url
+            }
+            return HttpResponse("Success", headers=headers)
         return redirect(success_url)
     context={
         "object":obj
@@ -42,10 +54,20 @@ def recipe_delete_view(request, id=None):
 
 @login_required
 def recipe_incredient_delete_view(request, id=None):
-    obj=get_object_or_404(RecipeIngredient, recipe__id=parent_id,id=id, recipe__user=request.user)
+    try:
+        obj=RecipeIngredient.objects.get(recipe__id=parent_id,id=id, recipe__user=request.user)
+    except:
+        obj=None
+    if obj is None:
+        if request.htmx:
+            return HttpResponse("Not Found")
+        raise Http404
     if request.method=="POST":
+        name=obj.name
         obj.delete()
         success_url=reverse('recipes:detail', kwargs={"id":parent_id})
+        if request.htmx:
+            return render(request,"recipes/partials/ingredient-inline-delete-response.html",{"name":name})
         return redirect(success_url)
     context={
         "object":obj
