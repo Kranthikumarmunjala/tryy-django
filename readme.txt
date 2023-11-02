@@ -23,3 +23,12 @@ pip install requests
 we create services.py file in recipes
 run the server choose a file and upload it
 in recipes-models.py add extracted variable file and do makemigration and migrate
+
+#video 80:-
+Deploy Django to do app platform via doctl CLI
+hear we install doctl
+(brew install doctl)
+crate app (doctl apps create--spec.do/app.yaml
+
+#video 81:-
+CI&CD For Django+Github+Digitalocean
