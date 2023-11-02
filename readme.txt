@@ -32,3 +32,8 @@ crate app (doctl apps create--spec.do/app.yaml
 
 #video 81:-
 CI&CD For Django+Github+Digitalocean
+hear worked on github digitalocean
+trydjango->github->windows->main.yaml
+
+#video 82:-
+Automating collectstatic with github acations
