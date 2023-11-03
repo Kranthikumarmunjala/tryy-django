@@ -37,3 +37,19 @@ trydjango->github->windows->main.yaml
 
 #video 82:-
 Automating collectstatic with github acations
+python manage.pyb collectstatic --noinput
+pip install pre-commit
+github/workflows->collectstatic.yaml
+github/workflows->prod.yaml and we create a file in static->recipes->js->css
+we add css,js files (git add static/css(or)js/) and we can push into github(git push origin main)
+same when we update code in collecstatic.yaml agin we push the code
+
+#video 83:-
+parsing OCR Microservice Results
+we create a file in recipes extract-example.py
+add parse_paragraph_to_recipe_line variable
+we import list from typing and unitRegistry from pint
+
+#video 84:-
+Microsrvice to database
+

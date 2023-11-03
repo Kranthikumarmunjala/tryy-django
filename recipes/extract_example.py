@@ -1,34 +1,20 @@
 from fractions import Fraction
 from typing import List
 from pint import UnitRegistry
-
-def number_str_to_float(amount_str:str) ->(any,bool):
-    """
-    Take in an amount string to return float (if possible).
-
-    valid string returns:
-    Float
-    Boolean -> True
-
-    Invalid string Returns
-    original string
-    Boolean ->False
-
-    Examples:
-        1 1/2->1.5,True
-        32 ->32.0,True
-        Abc ->Abc,False
-    """
-    success =False
+def number_str_to_float(amount_str:str)->(any,bool):
+    success=False
     number_as_float=amount_str
     try:
-        number_as_float=float(sum(Fraction(s) for s in f"{amount_str}".split()))
+        number_as_float=float(sum(Fraction(s)for s in f"{amount_str}".split()))
     except:
         pass
     if isinstance(number_as_float, float):
         success=True
     return number_as_float,success
 
+extracted={"results":["1 proud chicken breasts cut into bite"]}
+
+og=extracted['original']
 def parse_paragraph_to_recipe_line(paragraph):
     paragraph=paragraph.replace("\n", " ").replace("\f", " ").replace("\t"," ")
     results=[]
@@ -69,20 +55,16 @@ def convert_to_qty_units(results:list[str]):
                 units=item_unit
             else:
                 other.append(word)
-        name=""
-        other_txt=" ".join(other)
-        description=None
-        if len(other_txt)>=220:
-            name=other_txt
-        elif len(other_txt)>=220:
-            name=other_txt[:220]
-            description=other_txt[220:]
         data={
-            "quantity_as_float":qty,
-            "quantity":qty_raw,
+            "qty":qty,
+            "qty_raw":qty_raw,
             "unit":units,
-            "other":" ".join(other),
-            "description":description
+            "other":" ".join(other)
         }
         dataset.append(data)
     return dataset
+
+results=parse_paragraph_to_recipe_inline(og)
+dataset =convert_to_qty_units(results)
+
+print(dataset,results)
