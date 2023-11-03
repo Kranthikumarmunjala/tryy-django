@@ -52,4 +52,9 @@ we import list from typing and unitRegistry from pint
 
 #video 84:-
 Microsrvice to database
+in views from utils import convert_to_qty_units
+adding lower() into models and validatorsfile and do makemigrations and migrate
+and run the server
+
+#video 85:-
 

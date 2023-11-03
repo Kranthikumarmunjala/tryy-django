@@ -48,7 +48,7 @@ def convert_to_qty_units(results:list[str]):
                 continue
             iter_unit=None
             try:
-                item_unit=str(ureg[word].units)
+                item_unit=str(ureg[word].lower().units)
             except:
                 pass
             if units is None and iter_unit is not None:
