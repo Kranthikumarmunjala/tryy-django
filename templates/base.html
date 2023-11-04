@@ -2,23 +2,35 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Required meta tags-->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width-device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS-->
+        <script src="https://unpkg.com/htmx.org@1.5.0"
         <script src="https://unpkg.com/htmx.org@1.5.0"></script>
         <link rel='stylesheet' href='{% static "recipes/recipes-htmx.css" %}'/>
     </head>
     <body>
-        <h1>Hello World</h1>
+        {% include 'base/navbar.html' %]
 
-        {% static "recipes/recipes-htmx.css" %}
+        <div class='container'>
 
-        {% include 'search/search-form.html' %}
+                    {% block content %}
+                    <h3>This will be replaced</h3>
+                    {% endblock content %}
+                </div>
+            </div>
+        </div>
+<!--        {% include 'search/search-form.html' %}-->
 
-        {% block content %}
-        <h3>This will be replaced</h3>
-        {% endblock content %}
+<!--        {% block content %}-->
+<!--        <h3>This will be replaced</h3>-->
+<!--        {% endblock content %}-->
 
 
-        <script>
-            document.body.addEventListener("htmx:configRequest", (event)=>{event.detail.headers['X-CSRFToken']='{{ csrf_token }}'
-        </script>
-    </body>
-</html>
+<!--        <script>-->
+<!--            document.body.addEventListener("htmx:configRequest", (event)=>{event.detail.headers['X-CSRFToken']='{{ csrf_token }}'-->
+<!--        </script>-->
+<!--    </body>-->
+<!--</html>-->

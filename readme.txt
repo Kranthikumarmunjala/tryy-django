@@ -57,4 +57,10 @@ adding lower() into models and validatorsfile and do makemigrations and migrate
 and run the server
 
 #video 85:-
+Adding Boostrap &the trip of the Bootstrap Iceberg
+create navbar.html file in templates->base
+copy from bootstrap required meta tags and bootstrap css
+and paste in navbar.html
+
+#video86:-
 
