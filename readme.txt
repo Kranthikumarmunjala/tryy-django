@@ -63,4 +63,10 @@ copy from bootstrap required meta tags and bootstrap css
 and paste in navbar.html
 
 #video86:-
+Creating the meal Queue
+create mealstatus,mealqueryset,meal manager,meal functions in models
+register meal name in admin
+write appname(meals in settings->installed apps)
+
+#video87:-
 
