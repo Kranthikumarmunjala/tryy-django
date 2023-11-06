@@ -74,4 +74,9 @@ copy from recipes->test.py code into meals->test.py
 take test_pending_meals and test_completed_meals functions
 and lastly take test_add_item_via_toggle and run(python manage.py test meals)
 
+#video88:-
+Meal Queue Toggle View
+take meal_queue_toggle_view function in views
+add url path in trydjango urls
+create queue-toggle html file in templates-meals-partials
 
