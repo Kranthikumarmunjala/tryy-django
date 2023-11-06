@@ -4,9 +4,10 @@ from django.db.models import Q
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.utils import timezone
-
-
 # Create your models here.
+
+# from meals.utils import generate_meal_queue_totals
+# from meals.signals import (meal_added, meal_removed)
 
 from artcles.utils import slugify_instance_title
 
@@ -70,3 +71,17 @@ def article_post_save(sender,instance,created,*args, **kwargs):
         slugify_instance_title(instance,save=True)
 
 post_save.connect(article_post_save, sender=Article)
+
+
+
+# def meal_added_rec(sender, instance,*args,**kwargs):
+#     #print("Added",args, kwargs)
+#     user=instance.user
+#     data=generate_meal_queue_totals(user)
+#     print(data)
+#
+# meal_removed_rec(*args, **kwargs)
+#     print("removed", args, kwargs)
+#
+#
+# meal_removed.connect(meal_removed_rec)

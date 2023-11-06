@@ -1,7 +1,9 @@
 from django.conf import settings
 from django.db import models
+from django.db.models.signals import post_save
 from recipes.models import Recipe
 
+from .signals import (meal_added, meal_removed)
 
 """
 Meal
@@ -43,15 +45,26 @@ class MealManager(models.Manager):
     def get_queryset(self):
         return RecipeQuerySet(self.model, using=self._db)
 
-    def by_user(self,user_id):
+    def by_user_id(self, user_id):
+        return self.get_queryset().by_user_id(user_id)
+
+    def by_user(self,user):
         return self.get_queryset().by_user(user)
 
-    def toggle_in_queue(selfself,user_id, recipe_id):
+    def get_queue(self,user,prefetch_ingredients=False):
+        qs=self.get_queryset().by_user(user).pending()
+        if prefetch_ingredients:
+            return self.get_queryset().by_user(user).pending().prefetch_related('recipe_recipeingredient')
+        return qs
+
+    def toggle_in_queue(self,user_id, recipe_id):
         qs=self.get_queryset().all().by_user_id(user_id)
         already_queued=qs.in_queue(recipe_id)
         added=None
         if already_queued:
             recipe_qs=qs.filter(recipe_id=recipe_id)
+            for instance in recipe_qs:
+                instance.status=MealStatus.ABORTED
             recipe_qs.update(status=MealStatus.ABORTED)
         else:
             obj=self.model(
@@ -69,5 +82,20 @@ class Meal(models.Model):
     timestamp=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now=True)
     status=models.CharField(max_length=18, choices=MealStatus.choices,default=MealStatus.PENDING)
+    prev_status=models.CharField(max_length=18,null=True,choices=MealStatus.choices,default=None)
+
 
     objects=MealManager()
+
+def meal_post_save(sender,instance,created, *args, **kwargs):
+    if instance.status !=instance.prev_status:
+        if instance.status==MealStatus.PENDING:
+
+            meal_added.send(sender=sender, instance=instance)
+        if instance.status==MealStatus.ABORTED:
+
+            meal_removed.send(sender=sender, instance=instance)
+        instance.prev_status=instance.status
+        instance.save()
+
+post_save.connect(meal_post_save,sender=Meal)

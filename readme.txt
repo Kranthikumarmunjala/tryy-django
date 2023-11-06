@@ -86,4 +86,10 @@ we create example_calc.py file in templates-meals
 in terminal run python manage.py shell
 and copy the example_calc.py code and paste at terminal and run it
 
+#video90:-
+Calculation Function&Custom Signals
+create utils.py file in trydjango-meals
+same as create signals.py
+in models create meal_post_save function
+in articles-models meal_added_rec function
 
