@@ -36,10 +36,32 @@ class MealQuerySet(models.QuerySet):
     def expired(self):
         return self.filter(status=MealStatus.EXPIRED)
 
+    def in_queue(self, recipe_id):
+        return self.pending().filter(recipe_id=recipe_id).exists()
 
 class MealManager(models.Manager):
     def get_queryset(self):
         return RecipeQuerySet(self.model, using=self._db)
+
+    def by_user(self,user_id):
+        return self.get_queryset().by_user(user)
+
+    def toggle_in_queue(selfself,user_id, recipe_id):
+        qs=self.get_queryset().all().by_user_id(user_id)
+        already_queued=qs.in_queue(recipe_id)
+        added=None
+        if already_queued:
+            recipe_qs=qs.filter(recipe_id=recipe_id)
+            recipe_qs.update(status=MealStatus.ABORTED)
+        else:
+            obj=self.model(
+                user_id=user_id,
+                recipe_id=recipe_id,
+                status=MealStatus.PENDING
+            )
+            obj.save()
+            added=True
+        return
 
 class Meal(models.Model):
     user= models.ForeignKey( User,on_delete=models.CASCADE)

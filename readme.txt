@@ -69,4 +69,9 @@ register meal name in admin
 write appname(meals in settings->installed apps)
 
 #video87:-
+Toggle Recipes into Meal Queue & Test
+copy from recipes->test.py code into meals->test.py
+take test_pending_meals and test_completed_meals functions
+and lastly take test_add_item_via_toggle and run(python manage.py test meals)
+
 
