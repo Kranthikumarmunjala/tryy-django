@@ -80,3 +80,10 @@ take meal_queue_toggle_view function in views
 add url path in trydjango urls
 create queue-toggle html file in templates-meals-partials
 
+#video89:-
+Calculate Meal Queue Ingredient Totals
+we create example_calc.py file in templates-meals
+in terminal run python manage.py shell
+and copy the example_calc.py code and paste at terminal and run it
+
+
